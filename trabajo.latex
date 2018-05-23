@@ -1,0 +1,449 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Trabajo de Investigación de Dígitos de 
+Control}
+\author{sebastianemilio.moscosoriveros }
+\date{May 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{ISBN}
+\subsection{Concepto}
+El ISBN (International Standard Book Number) es un número único asignado a una publicación o edición específica de un libro, el cual puede ser usado en librerías o distribuidoras para diferenciar libros. Su principal propósito es la busqueda rapida de libros, y la determinación de sus características tales como autor, edición, encuadernado, origen, fecha de publicación entre otras. Este consta con una fórmula matemática, que calcula la última cifra de un ISBN a partir de todos los anteriores, para reconocer si un ISBN es erróneo en una cifra.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{image.jpg}
+\caption{Estructura ISBN}
+\label{fig:estructura}
+\end{figure}
+
+\subsection{Estructura}
+
+\subsubsection{Prefijo ISBN}
+
+Es asignado por la Agencia Internacional del ISBN, el cual tiene en cuenta las necesidades numéricas de cada país. Sin embargo, algunos países han recibido prefijos adicionales por agotarse los anteriores. Por ello entró en uso los números ISBN de trece cifras (ISBN-13). Los ISBN-13 comienzan en 978 o 979. Los números de diez cifras que solían usarse (ISBN-10) pueden expresarse como ISBN-13 anteponiendo el prefijo 978 y recalculando su dígito final.
+\\
+(ISBN-10) 4-10-206602-0 = (ISBN-13) 978-4-10-206602-7
+
+\subsubsection{Elemento de grupo de registro}
+
+Asignado de tal manera que combinado con el prefijo resulte el código del país de origen del libro, tal como se muestra en la Tabla \ref{tab:TablaCodigosL}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Prefijo} & \textbf{Grupo de Registro} & \textbf{País}\\
+\hline
+978 & 4 & Japón\\
+\hline
+978 & 612 & Perú\\
+\hline
+979 & 12 & Italia\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Ejemplos de códigos de paises}
+\label{tab:TablaCodigosL}
+\end{table}
+
+\subsubsection{Elemento del titular}
+
+Sirve para reconocer a un editor o a un sello editorial. Cuando un editor pide un elemento titular se le da un número determinado de elementos de publicación. Una vez que fueron usados todos estos números se le da un nuevo elemento titular al autor para sus posteriores publicaciones.
+
+\subsubsection{Elemento de Publicación}
+
+Este reconoce una publicación o edición en específico de un sello editorial o escritor. Puede diferenciar las características propias de una nueva publicación como encuadernado o edición nueva de este.
+
+\subsubsection{Dígito de Control}
+
+El dígito de control no es un número dado por un convenio o concuerdo, es un número calculado matemáticamente.
+\\
+El ISBN está hecho de tal manera que cuando alguien se equivoque al insertar un dígito, el mecanismo sea capaz de saber que es un error y hacérselo saber al usuario.
+\\
+Para saber si un ISBN es correcto, Se le da una ponderación a cada dígito y se lo multiplica por esta, se suman todos estos resultados y el residuo de dividir esta suma entre la clave (10 o 11) debe dar un residuo 0.
+
+\subsection{Verificación y cálculo del dígito de control del ISBN}
+
+\subsubsection{Verificación ISBN-10}
+
+Colocamos el ISBN-10 y multiplicamos cada uno de sus dígitos por la posición que ocupan, es decir, el primero por 1, el segundo, por 2 así sucesivamente. Seguidamente sumamos los productos y dividimos el resultado entre la clave 11. Si la división deja residuo 0 el ISBN-10 es correcto, en caso contrario es erróneo.
+\\
+Ejemplo:
+\\
+Verificando si el ISBN-10: 8-42-068186-5 es correcto
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{ISBN} & 8 & 4 & 2 & 0 & 6 & 8 & 1 & 8 & 6 & 5 &\\
+\textbf{Ponderación} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 &\\
+\hline
+\textbf{Productos} & 8 & 8 & 6 & 0 & 30 & 48 & 7 & 64 & 54 & 50 & 275\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Ejemplo de Verificación ISBN-10}
+\label{tab:TablaISBN1}
+\end{table}
+
+La suma total de los productos como se ve en la Tabla \ref{tab:TablaISBN1} es 275, éste dividido entre 11 da un residuo 0
+\\
+275 = 0 (mod 11)
+\\
+Por lo cual concluimos que el ISBN 8-42-068186-5 es correcto.
+
+\subsubsection{Cálculo Dígito de Control ISBN-10}
+
+Para calcular el último dígito a partir de los anteriores, se debe hacer la sumatoria ponderada de los primeros 9 dígitos y al resultado dividirlo entre la clave 11. El resto de la división es el último dígito o dígito de control. Si el residuo es igual a 10 se representa con una X
+\\
+Ejemplo:
+\\
+Determinando el dígito de control del ISBN-10 incompleto: 8-31-874601
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{ISBN} &  8 & 3 & 1 & 8 & 7 & 4 & 6 & 0 & 1 &\\
+\textbf{Ponderación} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 &\\
+\hline
+\textbf{Productos} & 8 & 6 & 3 & 32 & 35 & 24 & 42 & 0 & 9 & 159\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Ejemplo de Cálculo de Dígito de Control ISBN-10}
+\label{tab:TablaISBN2}
+\end{table}
+La suma de los productos como se ve en la Tabla \ref{tab:TablaISBN2} es 159, que dividido con 11 tiene residuo 5.
+\\
+159 = 5 (mod 11)
+\\
+Por lo cual concluimos que el ISBN-10 completo es: 8-31-874601-5.
+
+\subsubsection{Verificación ISBN-13}
+
+Colocamos los dígitos del ISBN-13. Si su posición es par se multiplica por 3, si su posición es impar se le multiplica por 1. Se divide la suma de estos productos por 10. Si el residuo de la división es 0 se considera que el ISBN-13 es correcto, caso contrario es erróneo.
+\\
+Ejemplo:
+Verificando si el ISBN-13: 978-84-473-5602-7 es correcto
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{ISBN} &  9 & 7 & 8 & 8 & 4 & 4 & 7 & 3 & 5 & 6 & 0 & 2 & 7 &\\
+\textbf{Ponderación} & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & 1\\
+\hline
+\textbf{Productos} & 9 & 21 & 8 & 24 & 4 & 12 & 7 & 9 & 5 & 18 & 0 & 6 & 7 & 130\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Ejemplo de Verificación ISBN-13}
+\label{tab:TablaISBN3}
+\end{table}
+
+La suma total de los productos como se ve en la Tabla \ref{tab:TablaISBN3} es 130, el cual dividido por 10, tiene residuo 0
+\\
+    130=0 (mod 10)
+\\
+Por lo que concluimos que el ISBN 978-84-473-5602-7 es correcto 
+
+\subsubsection{Cálculo Dígito de Control ISBN-13}
+
+Para calcular el último dígito a partir de los anteriores se debe hacer la sumatoria ponderada(con 1 y 3) de los primeros 12 dígitos, a este resultado dividirlo entre 10. Restar a 10 el residuo de la división y el nuevo resultado es el dígito de control.
+\\
+Para calcular el último dígito a partir de los anteriores se debe hacer la sumatoria ponderada(con 1 y 3) de los primeros 12 dígitos, a este resultado dividirlo entre 10. Restar a 10 el residuo de la división y el nuevo resultado es el dígito de control.
+\\
+Ejemplo:
+\\
+Determinando el dígito de control del ISBN-13 incompleto: 978-83-461-3325 
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{ISBN} &  9 & 7 & 8 & 8 & 3 & 4 & 6 & 1 & 3 & 3 & 2 & 5 &\\
+\textbf{Ponderación} & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & 1 & 3 & \\
+\hline
+\textbf{Productos} & 9 & 21 & 8 & 24 & 3 & 12 & 6 & 3 & 3 & 9 & 2 & 6 & 106\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Ejemplo de Cálculo del dígito de Control ISBN-13}
+\label{tab:TablaISBN4}
+\end{table}
+
+La suma de los productos como se observa en la Tabla \ref{tab:TablaISBN4} es 106, que dividido por 10, tiene residuo 6
+\\
+    130=6(mod 10)
+\\
+Y le restamos a 10 este número, obteniendo 4 que es el dígito de control
+\\
+    10-6=4
+\\
+Por lo que concluimos que el ISBN-13 completo es 978-83-461-3325-4
+
+
+
+
+
+
+\section{DNI}
+
+Nuestro  Documento Nacional de Identidad (DNI) tiene  en la parte inferior de su cara principal  el código de la  Organización de la Aviación Civil Internacional (OACI) este código contiene números que siguen a las fechas de nacimiento, caducidad y número de DNI. Este código es importante porque es reconocido en todos los aeropuertos del mundo. Entre los documentos oficiales de viaje que existen en la actualidad y utilizan este código OACI están los pasaportes, documentos nacionales de identidad, salvoconductos, entre otros. Estos dígitos son realizados con algoritmos matemáticos usados  para verificar la validez de dichos datos. Vamos a explicar cómo son generados estos códigos.\cite{infodni}
+\\
+
+Para poder explicar mejor el algoritmo usaremos los dígito de control del siguiente DNI:\\
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=1.0]{dni_ejemplo.png}
+\caption{DNI de ejemplo}
+\label{fig:universe}
+\end{figure}
+
+Podemos observar que en  los datos están formados por una serie de números y letras.\\
+Los dígitos de control se encuentran en lugares específicos en el código OACI.Estos son 4. Y hallaremos  estos dígitos con el  ejemplo que tenemos.\\
+ 
+Cómo son cuatro dígitos de control los llamaremos a, b, c y d, con todo los datos de la imagen, iniciaremos con el cálculo de estos dígitos de control:\\
+
+Para hallar nuestro primer digito de control tenemos los siguientes datos:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{datos1.png}
+\caption{Datos de nuestro primer digito}
+\label{fig:digito1}
+\end{figure}
+
+\newpage
+
+Para hallar el dígito de control a, se aplica el peso 7-3-1 , este peso se aplica a cada uno de los números del código, en este caso solo se toma el número del dni, para el dígito de control a. Entonces asignamos  el peso correspondiente a cada número y lo  multiplicamos. Después sumamos los  resultados de cada multiplicación, de esta suma tomamos la última cifra, siendo este nuestro primer dígito de control. La resolucion es la siguiente:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{figura1.png}
+\caption{Suma para hallar nuestro primer digito}
+\label{fig:digito1}
+\end{figure}
+
+Tomamos el último dígito y ese es el valor de a.
+ En este caso, a=4.
+
+
+Para hallar nuestro segundo dígito de control tenemos los siguientes datos:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{datos2.png}
+\caption{Datos de nuestro segundo digito}
+\label{fig:digito2}
+\end{figure}
+
+Para hallar el dígito de control b, volvemos aplicar el peso 7-3-1 , este peso se aplica a cada uno de los números del código, en este caso solo se toma el número de la fecha de nacimiento. Entonces asignamos  el peso correspondiente a cada número y lo  multiplicamos. Después sumamos los  resultados de cada multiplicación, de esta suma tomamos la última cifra, siendo este nuestro segundo dígito de control.La resolucion es la siguiente:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{figura2.png}
+\caption{Suma para hallar nuestro segundo digito}
+\label{fig:digito1}
+\end{figure}
+
+Tomamo el último dígito y ese es el valor de b.
+ En este caso, b=0.
+
+Para hallar nuestro tercer dígito de control tenemos los siguientes datos:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{dato3.png}
+\caption{Datos de nuestro tercer digito}
+\label{fig:digito2}
+\end{figure}
+
+Para hallar el dígito de control c, volvemos aplicar el peso 7-3-1 , en este caso solo se toma el número de la fecha de vencimiento. Entonces asignamos  el peso correspondiente a cada número y lo  multiplicamos. Después sumamos los  resultados de cada multiplicación, de esta suma tomamos la última cifra, siendo este nuestro tercer dígito de control.La resolucion es la siguiente:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{figura3.png}
+\caption{Suma para hallar nuestro tercer digito}
+\label{fig:digito1}
+\end{figure}
+
+Tomamo el último dígito y ese es el valor de c.
+ En este caso, c=1.
+
+d)Para terminar, tenemos que hallar el dígito de control d.Para hallar este dígito debemos utilizar el peso 7-3-1 a todos los números anteriores, osea desde que calculamos el primer dígitos hasta el tercero, incluyendo los dígitos mismos también.La operacion seria:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{figura4.png}
+\caption{Suma para hallar nuestro cuarto digito}
+\label{fig:digito1}
+\end{figure}
+
+Siendo el resultado del último dígito 4, entonces d=4.\cite{algoritmodni}
+
+A Partir del 2013 se comenzaron a generar los DNIs electrónicos ,los cuales tienen un RSA y una firma electrónica.					
+La tarjeta DNI electrónica  es capaz de generar y gestionar claves RSA. La generación de la pareja de claves RSA sigue el estándar PKCS#1 v1.5.
+Uno de los principales usos del DNI es la realización de firma electrónica. Para utilizar esta funcionalidad de firma, numerosas aplicaciones pueden ser empleadas, ya que éstas acceden a las capas o módulos intermedios de CSP y PKCS#11, que proporcionan un interfaz estándar de acceso a la tarjeta.
+
+\subsubsection{RFID: La tecnología de identificación por radiofrecuencia}
+
+Esta se basa en un nuevo proyecto  cuyo objetivo es el de identificar objetos de una forma rápida, con poca transmisión de información y en un entorno cercano. Su principal aplicación ha sido similar a la del código de barras, es decir, la identificación de productos, como por ejemplo los objetos en una cadena de montaje, en un almacén, etc, sin embargo sus ventajas son muy superiores. El RFID puede manejar un volumen razonable de datos a mayor distancia, se deteriora menos, no tiene por qué ser visible, se puede aplicar en casi todos los medios, es barato y se puede usar en más aplicaciones (por ejemplo, en la identificación de personas, animales o vehículos)\cite{alexandres2006rfid}.
+\section{CODIGO DE BARRAS}
+El código de barras es un código basado en la representación de un conjunto de líneas paralelas de distinto grosor y espaciado que en su conjunto contienen una determinada información, cada barra y espacio representan pequeñas cadenas de caracteres. Cabe resaltar que los códigos de barras son no significativos, en el sentido de que no proporcionan más información que la contenida en el propio código. No se tratan de códigos secretos, que entran en el campo de la criptografía. Entonces el código de barras permite reconocer rápidamente un artículo de forma única, global y no ambigua para poder realizar inventario o consultar alguna característica asociada al objeto.
+\subsection{Código de barras unidimensionales}
+La codificación de artículos más extendida se lleva a cabo mediante los llamados códigos de barras unidimensionales. Estos códigos ocupan, en realidad, dos dimensiones; sin embargo se llaman unidimensionales debido a que son leídos por un láser lineal, y basta con leer cualquier línea transversal al código, dado que todas ellas son iguales. Los códigos de barras suelen tener dos representaciones: una determinada cantidad de dígitos o caracteres en su parte inferior (no siempre presente) y una parte gráfica formada por unas barras verticales de diferente grosor y separadas por unos espacios paralelos.
+\begin{enumerate}
+    \item El código 39 (código 3 de 9) es un código de longitud variable, adecuado para codificar datos alfanuméricos de carácter general. Cada carácter se representa mediante cinco barras y cuatro espacios, con solo dos anchuras posibles: gruesa y fina(Ver fig. 9).
+    \begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.7]{imgcb1.png}
+    \caption{Ejemplos de Código 39 y Código 2 de 5}
+    \label{fig:digito1}
+    \end{figure}
+    \item El código 2 de 5 (intercalado 2 de 5) es un sistema de codificación de propósito general para datos numéricos(Ver fig. 9).
+    \item Codabar es un código para la codificación de números que incluye algunos caracteres especiales. Dispone de 4 separadores de inicio/fin, que pueden llevar información adicional(Ver fig. 10).
+    \item El código 128, más condensado que el código 39, permite codificar 128 caracteres ASCII. Cada caracter se representa mediante 3 barras y 3 espacios, que pueden tener cuatro anchuras diferentes(Ver fig. 10).
+    \begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.7]{imgcb2.png}
+    \caption{Ejemplos de Codabar y de Código 128}
+    \label{fig:digito1}
+    \end{figure}
+\end{enumerate}
+\subsection{¿Como funciona el código de barras?}
+El código es leído por un escáner o lector; las barras y espacios son traducidos primero a un lenguaje binario y después traducidos a números, los cuales lee el scanner decodificando los números y presentando el precio en la pantalla de la caja registradora.
+Cada producto tiene asignado un número único por lo general un número de 13 dígitos, conforme el sistema EAN (European Article Number); con la siguiente estructura:
+\begin{itemize}
+    \item Un prefijo que identifica a la organización que asignó el código (código del país)
+    \item La referencia al producto, asignada por el industrial; de cuatro dígitos
+    \item Un número que identifica a la empresa que usa este código; y es de cinco dígitos
+    \item Un dígito de control
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.7]{imgcb3.png}
+        \caption{Nomenclatura del código de barras}
+        \label{fig:nomenclatura codigo de barras}
+    \end{figure}
+\end{itemize}
+\subsection{Generando un código de barras}
+Supongamos que tenemos un producto, el cual se quiere lanzar al mercado. Entonces necesitamos que este tenga una identificación en el mercado, que lo identifique como único y no se confunda con otros productos, para tal caso generamos un código de barras para dicho producto que constara de 13 dígitos.
+\begin{itemize}
+    \item Elegimos el código de la organización que asignó el código o en nuestro caso le asignaremos el código de nuestro país (prefijo GS1), Perú. El número sería 775
+    \item Asignaremos una referencia a nuestro producto que constara de 4 dígitos, El numero elegido será 1004
+    \item El número que nos identificara como la empresa que usa este código será 76532
+    \item Tenemos los 12 primeros dígitos del código de barras, solo falta el último dígito que será el de control. Este último dígito lo calcularemos a partir de los 12 primeros dígitos asignados anteriormente. La expresión que usaremos será:
+    \begin{figure}[h!]
+        \centering
+        \includegraphics{imgcb4.png}
+        \caption{Formula para calcular digito de control}
+        \label{fig:Formula de calculo deigito de control}
+    \end{figure}
+\end{itemize}
+Nuestro código hasta el momento es 775 1004 76532. Usando la expresión anterior calcularemos el dígito de control.
+\begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.7]{imgcb5.png}
+        \caption{Calculando Digito de control}
+        \label{fig:Digito de control}
+    \end{figure}
+Por lo que nuestro código de barras quedaría así:  775 1004 76532 9
+Ahora veremos qué operaciones aritméticas realiza el ordenador sobre los dígitos del código de barras:
+\begin{itemize}
+    \item Suma los digitos de las posiciones pares: 7+1+0+7+5+2=22
+    \item Multiplica el resultado por 3: 3x22=66
+    \item Suma al resultado anterior los dígitos de las posiciones impares( el dígito de control no): 66 + 7+5+0+4+6+3=91
+    \item Resta la suma obtenida del siguiente múltiplo de 10: 100-91=9
+\end{itemize}
+Como podemos observar obtenemos como resultado el dígito de control, esto indica que se ha realizado correctamente el escaneo.
+\section{GTIN}
+Global Trade Item Number o GTIN es el número mundial de un articulo comercial, el cual es utilizado para identificar de manera única a cualquier producto o ítem sobre el cual existe una necesidad de obtener una información específica y al cual se le debe asignar un precio.
+El número de artículo de comercio global es el número de identificación del sistema EAN.UCC único a nivel mundial, o clave, que se utiliza para los artículos comerciales (productos y servicios). Se utiliza para identificar de manera única los artículos comerciales (productos y servicios) vendidos, entregados, almacenados y facturados a través de los canales de distribución comercial y minorista. Un GTIN es una estructura de datos numéricos que contiene 8 dígitos, 12 dígitos, 13 dígitos o 14 dígitos.
+Hay cuatro estructuras de datos para el GTIN; cada uno proporciona números únicos cuando está justificado a la derecha en un campo de base de datos de 14 dígitos:
+\begin{itemize}
+    \item UCC-12 (12 dígitos)
+    \item UCC-13(13 dígitos)
+    \item UCC-14 (14 dígitos)
+    \item UCC-8 (8 dígitos)
+\end{itemize}
+\subsection{Asignando un GTIN}
+Usaremos el ejemplo de código de barras para asignarle un GTIN-14. Para lo cual seguiremos los siguientes pasos:
+\begin{enumerate}
+    \item Seleccionaremos una variable logística que puede ir de 0 a 8 dependiendo de la jerarquía del producto. Supongamos que nuestro producto será nivel de consumidor, por lo que el digito será 0.
+    \item Los siguientes 12 dígitos serán la combinación del código que identifica a la empresa y el código asignado por la empresa para referenciar el producto. Tomaremos el código de referencia del producto del ejemplo anterior 1004. Para el prefijo de la compañía necesitamos completar los 12 dígitos por lo que el prefijo serán 8 dígitos. Este número será 00076532.
+    \item Ahora procederemos a calcular el dígito verificador.
+    \item Empezando por la derecha, coloque un factor 3 abajo del último número (en el caso del ejemplo, abajo del 2) posteriormente, coloque un factor 1 al siguiente número a la izquierda(en el ejemplo es el 0). Alterne estos factores, 3 y 1 hasta llegar al último número a la izquierda(en el ejemplo es el 1).
+    \begin{figure}[h!]
+        \centering
+        \includegraphics{imgcb6.png}
+        \caption{Calculo para el dígito de control}
+        \label{fig:calculo del digito de control}
+    \end{figure}
+    \item Multiplique cada número arriba por el que le corresponde abajo:
+    \begin{figure}[h!]
+        \centering
+        \includegraphics{imgcb7.png}
+        \caption{Calculo para el dígito de control 2}
+        \label{fig:calculo del digito de control2}
+    \end{figure}
+    \item Sume el resultado de las multiplicaciones 0+0+0+0+21+6+15+3+6+1+0+0+12=64
+    \item Finalmente reste el resultado de la suma, a la decena inmediata  superior que le corresponde, en este caso, es 70 la decena superior de 64. Como resultado tenemos el dígito verificador. 70 – 64 = 6
+\end{enumerate}
+Nuestro código GTIN quedaría de la siguiente forma:  0 00076532 1004 6
+\subsection{¿Por qué usar GTIN?}
+\begin{itemize}
+    \item Singularidad: el GTIN identifica un artículo de manera única. Las reglas para asignar GTIN aseguran que a cada variación de un artículo (producto o servicio) se le asigna un único número de referencia que es globalmente único.
+    \item Sin importancia: la estructura de numeración GTIN no contiene ninguna información significativa en sí misma. Los GTIN son indicadores simples de la información de la base de datos que se pueden usar directamente en cualquier empresa y en cualquier país.
+    \item Multisectorial: los GTIN son únicos en todos los sectores comerciales. Esto significa que un producto de atención médica, una tarjeta de sonido de PC o un servicio por Internet están identificados de manera compatible.
+    \item Internacional: los GTIN son únicos en todo el mundo. Un GTIN es asignado en cualquier parte del mundo y puede usarse en cualquier parte del mundo.
+    \item Seguridad: la seguridad de los GTIN se proporciona mediante una combinación de búsqueda en la base de datos y el formato numérico de longitud fija que incluye un Dígito de verificación estándar.
+    \item Integridad de datos: el dígito de verificación asegura la integridad de los datos que pasan al sistema.
+    \item Numeración de fuentes: el GTIN es asignado por el propietario de la marca del producto. Una vez asignados, todos los socios comerciales y usuarios internos pueden usar el GTIN. El mismo GTIN se puede usar para identificar una serie de elementos idénticos.
+    \item Captura automática de datos: uno de los principales beneficios del GTIN es que puede codificarse en muchas tecnologías automáticas de captura de datos (como un código de barras o etiquetas de identificación por radiofrecuencia). El escaneo permite que el flujo de información se vincule al flujo físico de artículos comerciales a través de la cadena de suministro.
+\end{itemize}
+\section{Número de Serie}
+Es un código alfanumérico (identificador único) que se utiliza con fines de identificación e inventariado, un número de serie pretende proporcionar un único número a un dispositivo a la vez. Un número de serie permite a una empresa identificar un producto y obtener información adicional sobre él, para reemplazarlo o como medio de encontrar piezas compatibles.
+\subsection{Número de Serie en software}
+Se usan para ayudar a garantizar que la instalación de un programa solo se realice una vez y solo en la computadora del comprador. El cual una vez utilizado es registrado por el fabricante de modo que al intentar usar otra vez el número de serie se produce una alerta, al no poder existir 2 iguales.
+\subsection{Ejemplo}
+Un ejemplo común de su aplicación son los números de serie de los billetes, en el caso del euro, dicho número debe cumplir con 2 algoritmos:
+
+\section{Codificación Huffman}
+\subsection{Idea} 
+La codificación de Huffman, es un algoritmo muy usado en la compresión de datos, por ejemplo si tuviésemos que enviar una mensaje, una imagen, un documento, etc. La codificación de Huffman es una herramienta muy útil al momento de comprimir toda esa información, y pasarla a un código binario.
+Ésta técnica de codificación trabaja con un tipo de grafo llamado árbol, y en este caso árboles binarios, aquel que tiene a lo máximo 2 hijos, si fuera un árbol ternario, tendría a lo máximo 3 hijos, y así tenemos infinidad de tipos de árboles; pero en la codificación de Huffman trabajaremos solo con árboles binarios, para poder generar códigos binarios.
+
+\subsection{Explicación del Algoritmo}
+Empecemos con algo simple:
+\begin{enumerate}
+    \item Tenemos una cadena \[ P = { a_1 , a_2 , a_3 , … , a_n } \]
+    \item Algo que sucede con la cadena $P$, es que sus elementos tienen un grado de repetición genéricamente hablando, $a_2$ podría repetirse k veces en la cadena P, con lo que tendría un grado de repetición de k; entonces así obtenemos: \[ R = { a_1_k , a_2_k , a_3_k , … , a_n_k }\]donde R es la lista con el grado de repetición de los elementos en la cadena P, obviamente si $a_1$ fuese igual a $a_2$, sólo existiría un grado de repetición por ambos.
+
+    \item Una vez obtenida la lista $R$, ordenamos crecientemente ésta respecto al grado de repeticiones.
+    \item  Ahora pasamos a unir cada par de elementos en la lista R, creando así un nuevo padre que se definirá como $NULL_{p+q}$, donde $p$ y $q$ son el grado de repetición de dos elementos diferentes, este paso lo seguimos haciendo hasta obtener un árbol binario.
+
+    \item 
+    \item  
+    \item 
+    
+\end{enumerate}
+
+
+
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
